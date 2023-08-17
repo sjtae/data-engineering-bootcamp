@@ -39,7 +39,6 @@ table = client.get_table(table_id)
 print(f"Loaded {table.num_rows} rows and {len(table.schema)} columns to {table_id}")
 
 # ----------
-
 # Events
 job_config_partition = bigquery.LoadJobConfig(
     skip_leading_rows=1,
@@ -54,6 +53,7 @@ job_config_partition = bigquery.LoadJobConfig(
 
 dt = "2021-02-10"
 partition = dt.replace("-", "")
+
 data = "events"
 file_path = f"{DATA_FOLDER}/{data}.csv"
 with open(file_path, "rb") as f:
