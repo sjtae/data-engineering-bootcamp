@@ -40,7 +40,7 @@ print(f"Loaded {table.num_rows} rows and {len(table.schema)} columns to {table_i
 
 # ----------
 # Events
-job_config_partition = bigquery.LoadJobConfig(
+job_config = bigquery.LoadJobConfig(
     skip_leading_rows=1,
     write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE,
     source_format=bigquery.SourceFormat.CSV,
@@ -58,7 +58,7 @@ data = "events"
 file_path = f"{DATA_FOLDER}/{data}.csv"
 with open(file_path, "rb") as f:
     table_id = f"{project_id}.my_deb_bootcamp.{data}${partition}"
-    job = client.load_table_from_file(f, table_id, job_config=job_config_partition)
+    job = client.load_table_from_file(f, table_id, job_config=job_config)
     job.result()
 
 table = client.get_table(table_id)
@@ -66,6 +66,13 @@ print(f"Loaded {table.num_rows} rows and {len(table.schema)} columns to {table_i
 
 # ----------
 # order_items
+job_config = bigquery.LoadJobConfig(
+    skip_leading_rows=1,
+    write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE,
+    source_format=bigquery.SourceFormat.CSV,
+    autodetect=True,
+)
+
 data = "order_items"
 file_path = f"{DATA_FOLDER}/{data}.csv"
 with open(file_path, "rb") as f:
@@ -78,11 +85,22 @@ print(f"Loaded {table.num_rows} rows and {len(table.schema)} columns to {table_i
 
 # ----------
 # orders
+job_config = bigquery.LoadJobConfig(
+    skip_leading_rows=1,
+    write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE,
+    source_format=bigquery.SourceFormat.CSV,
+    autodetect=True,
+    time_partitioning=bigquery.TimePartitioning(
+        type_=bigquery.TimePartitioningType.DAY,
+        field="created_at",
+    ),
+)
+
 data = "orders"
 file_path = f"{DATA_FOLDER}/{data}.csv"
 with open(file_path, "rb") as f:
     table_id = f"{project_id}.my_deb_bootcamp.{data}"
-    job = client.load_table_from_file(f, table_id, job_config=job_config_partition)
+    job = client.load_table_from_file(f, table_id, job_config=job_config)
     job.result()
 
 table = client.get_table(table_id)
@@ -90,6 +108,13 @@ print(f"Loaded {table.num_rows} rows and {len(table.schema)} columns to {table_i
 
 # ----------
 # products
+job_config = bigquery.LoadJobConfig(
+    skip_leading_rows=1,
+    write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE,
+    source_format=bigquery.SourceFormat.CSV,
+    autodetect=True,
+)
+
 data = "products"
 file_path = f"{DATA_FOLDER}/{data}.csv"
 with open(file_path, "rb") as f:
@@ -102,6 +127,13 @@ print(f"Loaded {table.num_rows} rows and {len(table.schema)} columns to {table_i
 
 # ----------
 # promos
+job_config = bigquery.LoadJobConfig(
+    skip_leading_rows=1,
+    write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE,
+    source_format=bigquery.SourceFormat.CSV,
+    autodetect=True,
+)
+
 data = "promos"
 file_path = f"{DATA_FOLDER}/{data}.csv"
 with open(file_path, "rb") as f:
@@ -114,11 +146,22 @@ print(f"Loaded {table.num_rows} rows and {len(table.schema)} columns to {table_i
 
 # ----------
 # users
+job_config = bigquery.LoadJobConfig(
+    skip_leading_rows=1,
+    write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE,
+    source_format=bigquery.SourceFormat.CSV,
+    autodetect=True,
+    time_partitioning=bigquery.TimePartitioning(
+        type_=bigquery.TimePartitioningType.DAY,
+        field="created_at",
+    ),
+)
+
 data = "users"
 file_path = f"{DATA_FOLDER}/{data}.csv"
 with open(file_path, "rb") as f:
     table_id = f"{project_id}.my_deb_bootcamp.{data}"
-    job = client.load_table_from_file(f, table_id, job_config=job_config_partition)
+    job = client.load_table_from_file(f, table_id, job_config=job_config)
     job.result()
 
 table = client.get_table(table_id)
